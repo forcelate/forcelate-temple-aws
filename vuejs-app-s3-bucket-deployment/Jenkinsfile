@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr:'5'))
+    }
+    triggers {
+        pollSCM('H */1 * * *')
+    }
+    tools {
+        nodejs 'NodeJS 8.12.0'
+    }
+    stages {
+        stage('build') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+        stage('deployment-s3') {
+        	steps {
+        		withAWS(region:'<aws-region>',credentials:'<aws-credentials>') {
+              		s3Delete(bucket: '<aws-s3>', path:'')
+              		s3Upload(bucket: '<aws-s3>', workingDir:'dist', includePathPattern:'**/*', path:'');
+            	}
+        	}
+        }
+    }
+    post {
+        always {
+            script {
+                // https://issues.jenkins-ci.org/browse/JENKINS-46325
+                // https://jenkins.io/doc/book/pipeline/jenkinsfile/
+                // Workaround: ['SUCCESS'] isEqualTo [null]
+                if (currentBuild.result == null) {
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
+            alwaysNotifications()
+        }
+        failure {
+            failureNotifications()
+        }
+    }
+}
+
+def alwaysNotifications() {
+    emailext (
+        to: "$FORCELATE_CTO, $FORCELATE_DEVELOPERS",
+        subject: '${DEFAULT_SUBJECT}',
+        body: '''${SCRIPT, template="pipeline-changes.template"}'''
+    )
+}
+
+def failureNotifications() {
+    emailext (
+        to: "$FORCELATE_ADMINISTRATORS",
+        subject: '${DEFAULT_SUBJECT}',
+        body: '''${SCRIPT, template="pipeline-changes.template"}'''
+    )
+}
