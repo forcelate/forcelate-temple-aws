@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h1>v1.1</h1>
+    <h1>v1.2</h1>
     <div>
       <button class="btn button-submit" @click="loadUsers">Load Users...</button>
     </div>
