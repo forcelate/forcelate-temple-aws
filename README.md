@@ -7,5 +7,6 @@ Welcome to Forcelate AWS Temple — Proofs of Concepts repository. May the force
 
 # Proofs of Concepts:
 
+* Route53: Client (Vue.js), Server (Java, Spring Boot, Docker), HTTPS
 * Vue.js application => S3 bucket by Jenkins
 * to be continued...
