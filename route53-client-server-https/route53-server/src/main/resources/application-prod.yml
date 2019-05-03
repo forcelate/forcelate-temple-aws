@@ -11,7 +11,10 @@ appConfigs:
   cors:
     enabled: true
     allowedOrigins:
-      - https://forcestage.com/
+    - https://forcestage.com
+    allowedHeaders:
+    - Access-Control-Allow-Origin
+    - Access-Control-Allow-Headers
   secureConfig:
     password1: ENC(s/6mYnvgl0zzpZa0BrezOg==)
     password2: ENC(A4yLVcQ4VgSsytQYYIs5HhGXpZ2si465jrOCX9USXhI=)

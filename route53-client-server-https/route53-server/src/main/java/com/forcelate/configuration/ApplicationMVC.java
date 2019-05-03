@@ -22,10 +22,12 @@ public class ApplicationMVC implements WebMvcConfigurer {
         Cors cors = applicationProperties.getAppConfigs().getCors();
         if (cors.getEnabled()) {
             LOGGER.info("Spring configuration: CORS mappings enabled");
+            LOGGER.info("CORS, allowedMethods `{}`", cors.getAllowedHeaders());
             registry.addMapping(cors.getPathPattern())
                     .allowedOrigins(cors.getAllowedOrigins())
                     .allowedMethods(cors.getAllowedMethods())
                     .exposedHeaders(cors.getExposedHeaders())
+                    .allowedHeaders(cors.getAllowedHeaders())
                     .allowCredentials(cors.getAllowCredentials());
         } else {
             LOGGER.info("Spring configuration: CORS mappings disabled");
