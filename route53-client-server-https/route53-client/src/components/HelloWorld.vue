@@ -1,16 +1,32 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h1>Users</h1>
+    <h1>v1.0</h1>
+    <div>
+      <button class="btn button-submit" @click="loadUsers">Load Users...</button>
+    </div>
+    <h1>{{ serverMsg }}</h1>
   </div>
 </template>
 
 <script>
+import RestService from '@/services/RestService'
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Route53: Client (Vue.js) on S3'
+      msg: 'Route53: Client (Vue.js) on S3',
+      serverMsg: ''
+    }
+  },
+  methods: {
+    loadUsers: function () {
+      RestService.methods.getUsers().then((response) => {
+        this.serverMsg = 'Users: <' + response.body[0].username + ', ' + response.body[1].username + '>'
+      }, (response) => {
+        this.serverMsg = 'Sorry, server exception!'
+      })
     }
   }
 }
