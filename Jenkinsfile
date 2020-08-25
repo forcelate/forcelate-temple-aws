@@ -33,7 +33,7 @@ pipeline {
 
 def alwaysNotifications() {
     emailext (
-        to: "$FORCELATE_CTO, $FORCELATE_DEVELOPERS",
+        to: "$TECH1_CTO, $TECH1_DEVELOPERS",
         subject: '${DEFAULT_SUBJECT}',
         body: '''${SCRIPT, template="pipeline-changes.template"}'''
     )
@@ -41,7 +41,7 @@ def alwaysNotifications() {
 
 def failureNotifications() {
     emailext (
-        to: "$FORCELATE_ADMINISTRATORS",
+        to: "$TECH1_ADMINISTRATORS",
         subject: '${DEFAULT_SUBJECT}',
         body: '''${SCRIPT, template="pipeline-changes.template"}'''
     )
